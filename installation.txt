@@ -24,3 +24,37 @@ git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com/umazel/alviolahome.git
 git push -u origin main
+
+php artisan make:model Employee --all
+
+code:
+app\Providers\AppServiceProvider.php
+public function boot(): void
+{
+    Model::unguard();
+}
+
+migration:
+$table->date('deleted_at')->nullable();
+
+code:
+app\Models\Employee.php
+class Employee extends Model
+{
+    use HasFactory;
+    use SoftDeletes;
+
+}
+
+code:
+app\Policies\EmployeePolicy.php
+return true;
+
+composer require doctrine/dbal --dev
+
+php artisan make:filament-resource Employee --generate --soft-deletes
+
+php artisan migrate
+
+note:
+php artisan route:list
