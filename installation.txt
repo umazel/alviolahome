@@ -1,0 +1,26 @@
+composer create-project laravel/laravel alviolahome
+
+code:
+.env
+config\app.php
+
+composer require filament/filament
+
+database:
+create database
+
+php artisan migrate
+
+php artisan make:filament-user
+
+php artisan vendor:publish --tag=filament-config
+
+code:
+routes\web.php
+
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/umazel/alviolahome.git
+git push -u origin main
