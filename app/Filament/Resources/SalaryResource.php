@@ -27,8 +27,7 @@ class SalaryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\DatePicker::make('salary_date')
-                    ->required()
-                    ->unique(),
+                    ->required(),
                 Forms\Components\Select::make('employee_id')
                     ->relationship('employee', 'name')->preload()
                     ->required()
