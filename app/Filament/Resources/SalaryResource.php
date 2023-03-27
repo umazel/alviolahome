@@ -11,6 +11,7 @@ use App\Models\Employee;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
+use Illuminate\Validation\Rules\Unique;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SalaryResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -27,7 +28,13 @@ class SalaryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\DatePicker::make('salary_date')
-                    ->required(),
+                    ->required()
+                    ->unique(
+                        ignoreRecord: true,
+                        callback: function (Unique $rule,  Closure $get) {
+                            return $rule->where('employee_id', $get('employee_id'));
+                        }
+                    ),
                 Forms\Components\Select::make('employee_id')
                     ->relationship('employee', 'name')->preload()
                     ->required()
