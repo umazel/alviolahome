@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Remove to enable filament default
 // Route::get('/', function () {
 //     return view('welcome');
 // });

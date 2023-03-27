@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('position')->nullable();
             $table->date('birthday')->nullable();
             $table->date('date_hired')->nullable();
-            $table->date('deleted_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

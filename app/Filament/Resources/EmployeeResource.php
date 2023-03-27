@@ -24,7 +24,8 @@ class EmployeeResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->required()->unique(ignorable: fn ($record) => $record)
+                    ->required()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('rate')
                     ->numeric()
@@ -41,7 +42,8 @@ class EmployeeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('rate'),
                 Tables\Columns\TextColumn::make('position'),
                 Tables\Columns\TextColumn::make('birthday')
