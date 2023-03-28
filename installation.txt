@@ -44,7 +44,7 @@ public function boot(): void
 }
 
 migration:
-$table->date('deleted_at')->nullable();
+$table->softDeletes();
 
 code:
 app\Models\Employee.php
@@ -59,11 +59,11 @@ code:
 app\Policies\EmployeePolicy.php
 return true;
 
+php artisan migrate
+
 composer require doctrine/dbal --dev
 
 php artisan make:filament-resource Employee --generate --soft-deletes
-
-php artisan migrate
 
 note:
 php artisan route:list

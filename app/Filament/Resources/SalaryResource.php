@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use Closure;
-use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Salary;
@@ -36,7 +35,8 @@ class SalaryResource extends Resource
                         }
                     ),
                 Forms\Components\Select::make('employee_id')
-                    ->relationship('employee', 'name')->preload()
+                    ->relationship('employee', 'name')
+                    ->preload()
                     ->required()
                     ->reactive()
                     ->AfterStateUpdated(
@@ -95,9 +95,9 @@ class SalaryResource extends Resource
                 Tables\Columns\TextColumn::make('rate'),
                 Tables\Columns\TextColumn::make('work_days'),
                 Tables\Columns\TextColumn::make('ot_hours')
-                    ->label('Overtime hours'),
+                    ->label('OT hours'),
                 Tables\Columns\TextColumn::make('ut_hours')
-                    ->label('Late / Undertime hours'),
+                    ->label('Late / UT hours'),
                 Tables\Columns\TextColumn::make('ca_payment')
                     ->label('CA payment'),
                 Tables\Columns\TextColumn::make('loan_payment'),
