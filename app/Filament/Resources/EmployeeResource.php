@@ -16,6 +16,7 @@ use App\Filament\Resources\EmployeeResource\RelationManagers\LoansRelationManage
 use App\Filament\Resources\EmployeeResource\RelationManagers\SalariesRelationManager;
 use App\Filament\Resources\EmployeeResource\RelationManagers\AttendancesRelationManager;
 use App\Filament\Resources\EmployeeResource\RelationManagers\ThirteenthmonthsRelationManager;
+use App\Filament\Resources\EmployeeResource\Widgets\EmployeeStatsOverview;
 
 class EmployeeResource extends Resource
 {
@@ -95,5 +96,12 @@ class EmployeeResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            EmployeeStatsOverview::class,
+        ];
     }
 }

@@ -79,6 +79,8 @@ public static function getRelations(): array
     ];
 }
 
+php artisan make:filament-widget EmployeeStatsOverview --resource=EmployeeResource --stats-overview
+
 note:
 php artisan route:list
 

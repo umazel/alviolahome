@@ -6,6 +6,7 @@ use Filament\Pages\Actions;
 use Filament\Resources\Resource;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\EmployeeResource;
+use App\Filament\Resources\EmployeeResource\Widgets\EmployeeStatsOverview;
 
 class ListEmployees extends ListRecords
 {
@@ -26,5 +27,12 @@ class ListEmployees extends ListRecords
     protected function getDefaultTableSortDirection(): ?string
     {
         return 'desc';
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            EmployeeStatsOverview::class,
+        ];
     }
 }
