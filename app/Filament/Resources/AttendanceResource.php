@@ -4,30 +4,30 @@ namespace App\Filament\Resources;
 
 use Closure;
 use Filament\Forms;
-use App\Models\Loan;
 use Filament\Tables;
+use App\Models\Attendance;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Illuminate\Validation\Rules\Unique;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\LoanResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\LoanResource\RelationManagers;
+use App\Filament\Resources\AttendanceResource\Pages;
+use App\Filament\Resources\AttendanceResource\RelationManagers;
 
-class LoanResource extends Resource
+class AttendanceResource extends Resource
 {
-    protected static ?string $model = Loan::class;
+    protected static ?string $model = Attendance::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
+    protected static ?string $navigationIcon = 'heroicon-o-collection';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\DatePicker::make('loan_date')
+                Forms\Components\DatePicker::make('present_date')
                     ->required()
                     ->unique(
                         ignoreRecord: true,
@@ -37,10 +37,21 @@ class LoanResource extends Resource
                     ),
                 Forms\Components\Select::make('employee_id')
                     ->relationship('employee', 'name')
-                    ->preload()
                     ->required(),
-                Forms\Components\TextInput::make('loan')
+                Forms\Components\TextInput::make('ot_hours')
+                    ->label('Overtime hours')
+                    ->minValue(0)
+                    ->default(0)
+                    ->numeric()
                     ->required(),
+                Forms\Components\TextInput::make('ut_hours')
+                    ->label('Late / Undertime hours')
+                    ->minValue(0)
+                    ->default(0)
+                    ->numeric()
+                    ->required(),
+                Forms\Components\Textarea::make('assigned_work')
+                    ->maxLength(65535),
             ]);
     }
 
@@ -48,10 +59,14 @@ class LoanResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('loan_date')
+                Tables\Columns\TextColumn::make('present_date')
                     ->date(),
                 Tables\Columns\TextColumn::make('employee.name'),
-                Tables\Columns\TextColumn::make('loan'),
+                Tables\Columns\TextColumn::make('ot_hours')
+                    ->label('OT hours'),
+                Tables\Columns\TextColumn::make('ut_hours')
+                    ->label('Late / UT hours'),
+                Tables\Columns\TextColumn::make('assigned_work'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -76,9 +91,9 @@ class LoanResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLoans::route('/'),
-            'create' => Pages\CreateLoan::route('/create'),
-            'edit' => Pages\EditLoan::route('/{record}/edit'),
+            'index' => Pages\ListAttendances::route('/'),
+            'create' => Pages\CreateAttendance::route('/create'),
+            'edit' => Pages\EditAttendance::route('/{record}/edit'),
         ];
     }
 
