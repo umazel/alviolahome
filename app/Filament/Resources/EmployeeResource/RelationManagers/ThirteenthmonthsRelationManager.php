@@ -1,30 +1,26 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\EmployeeResource\RelationManagers;
 
 use Closure;
 use Filament\Forms;
 use Filament\Tables;
-use Illuminate\Support\Str;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
-use App\Models\Thirteenthmonth;
-use Filament\Resources\Resource;
 use Illuminate\Validation\Rules\Unique;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\ThirteenthmonthResource\Pages;
-use App\Filament\Resources\ThirteenthmonthResource\RelationManagers;
+use Filament\Resources\RelationManagers\RelationManager;
 
-class ThirteenthmonthResource extends Resource
+class ThirteenthmonthsRelationManager extends RelationManager
 {
-    protected static ?string $model = Thirteenthmonth::class;
+    protected static string $relationship = 'thirteenthmonths';
 
     protected static ?string $modelLabel = '13ᵗʰ Month Pay';
+    protected static ?string $pluralModelLabel = '13ᵗʰ Month Pays';
 
-    protected static ?string $navigationIcon = 'heroicon-o-gift';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?string $recordTitleAttribute = 'employee_id';
 
     public static function form(Form $form): Form
     {
@@ -62,39 +58,39 @@ class ThirteenthmonthResource extends Resource
                     ->label('13ᵗʰ Month Pay'),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ForceDeleteBulkAction::make(),
                 Tables\Actions\RestoreBulkAction::make(),
+                Tables\Actions\ForceDeleteBulkAction::make(),
             ]);
     }
 
-    public static function getRelations(): array
+    protected function getTableQuery(): Builder
     {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListThirteenthmonths::route('/'),
-            'create' => Pages\CreateThirteenthmonth::route('/create'),
-            'edit' => Pages\EditThirteenthmonth::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
+        return parent::getTableQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    protected function getDefaultTableSortColumn(): ?string
+    {
+        return 'thirteenthmonth_date';
+    }
+
+    protected function getDefaultTableSortDirection(): ?string
+    {
+        return 'desc';
     }
 }

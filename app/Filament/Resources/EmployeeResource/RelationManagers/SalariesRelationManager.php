@@ -1,29 +1,23 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\EmployeeResource\RelationManagers;
 
 use Closure;
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Salary;
 use App\Models\Employee;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
-use Filament\Resources\Resource;
-use Filament\Tables\Filters\Filter;
 use Illuminate\Validation\Rules\Unique;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\SalaryResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\SalaryResource\RelationManagers;
+use Filament\Resources\RelationManagers\RelationManager;
 
-class SalaryResource extends Resource
+class SalariesRelationManager extends RelationManager
 {
-    protected static ?string $model = Salary::class;
+    protected static string $relationship = 'salaries';
 
-    protected static ?string $navigationIcon = 'heroicon-o-cash';
-
-    protected static ?int $navigationSort = 2;
+    protected static ?string $recordTitleAttribute = 'employee_id';
 
     public static function form(Form $form): Form
     {
@@ -94,8 +88,7 @@ class SalaryResource extends Resource
                 Tables\Columns\TextColumn::make('salary_date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('employee.name')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('employee.name'),
                 Tables\Columns\TextColumn::make('rate'),
                 Tables\Columns\TextColumn::make('work_days'),
                 Tables\Columns\TextColumn::make('ot_hours')
@@ -110,30 +103,16 @@ class SalaryResource extends Resource
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ForceDeleteBulkAction::make(),
-                Tables\Actions\RestoreBulkAction::make(),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListSalaries::route('/'),
-            'create' => Pages\CreateSalary::route('/create'),
-            'edit' => Pages\EditSalary::route('/{record}/edit'),
-        ];
     }
 
     public static function getEloquentQuery(): Builder
@@ -142,5 +121,15 @@ class SalaryResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    protected function getDefaultTableSortColumn(): ?string
+    {
+        return 'salary_date';
+    }
+
+    protected function getDefaultTableSortDirection(): ?string
+    {
+        return 'desc';
     }
 }

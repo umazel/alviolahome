@@ -68,6 +68,17 @@ composer require doctrine/dbal --dev
 
 php artisan make:filament-resource Employee --generate --soft-deletes
 
+php artisan make:filament-relation-manager EmployeeResource salaries id --soft-deletes
+
+code:
+EmployeeResource:
+public static function getRelations(): array
+{
+    return [
+        SalariesRelationManager::class,
+    ];
+}
+
 note:
 php artisan route:list
 

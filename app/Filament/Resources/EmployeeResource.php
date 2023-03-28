@@ -2,16 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EmployeeResource\Pages;
-use App\Filament\Resources\EmployeeResource\RelationManagers;
-use App\Models\Employee;
 use Filament\Forms;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use App\Models\Employee;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\EmployeeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\EmployeeResource\RelationManagers;
+use App\Filament\Resources\EmployeeResource\RelationManagers\LoansRelationManager;
+use App\Filament\Resources\EmployeeResource\RelationManagers\SalariesRelationManager;
+use App\Filament\Resources\EmployeeResource\RelationManagers\AttendancesRelationManager;
+use App\Filament\Resources\EmployeeResource\RelationManagers\ThirteenthmonthsRelationManager;
 
 class EmployeeResource extends Resource
 {
@@ -69,7 +73,10 @@ class EmployeeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            AttendancesRelationManager::class,
+            SalariesRelationManager::class,
+            LoansRelationManager::class,
+            ThirteenthmonthsRelationManager::class,
         ];
     }
 
