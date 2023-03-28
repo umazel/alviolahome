@@ -20,7 +20,7 @@ return new class extends Migration
             $table->double('work_days');
             $table->double('ot_hours');
             $table->double('ut_hours');
-            $table->double('cash_advance_payment');
+            $table->double('ca_payment');
             $table->double('loan_payment');
             $table->double('gross_pay')
                 ->storedAs(
@@ -28,7 +28,7 @@ return new class extends Migration
                     + round(rate * work_days / 8 * ot_hours,0)
                     - round(rate * work_days / 8 * ut_hours,0)'
                 );
-            $table->double('net_pay')->storedAs('gross_pay - cash_advance_payment - loan_payment');
+            $table->double('net_pay')->storedAs('gross_pay - ca_payment - loan_payment');
             $table->timestamps();
             $table->softDeletes();
         });

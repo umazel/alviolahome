@@ -56,7 +56,6 @@ class SalaryResource extends Resource
                     ->disabled(),
                 Forms\Components\TextInput::make('work_days')
                     ->minValue(0)
-                    ->default(0)
                     ->numeric()
                     ->required(),
                 Forms\Components\TextInput::make('ot_hours')
@@ -71,7 +70,8 @@ class SalaryResource extends Resource
                     ->default(0)
                     ->numeric()
                     ->required(),
-                Forms\Components\TextInput::make('cash_advance_payment')
+                Forms\Components\TextInput::make('ca_payment')
+                    ->label('CA payment')
                     ->minValue(0)
                     ->default(0)
                     ->numeric()
@@ -98,7 +98,8 @@ class SalaryResource extends Resource
                     ->label('Overtime hours'),
                 Tables\Columns\TextColumn::make('ut_hours')
                     ->label('Late / Undertime hours'),
-                Tables\Columns\TextColumn::make('cash_advance_payment'),
+                Tables\Columns\TextColumn::make('ca_payment')
+                    ->label('CA payment'),
                 Tables\Columns\TextColumn::make('loan_payment'),
                 Tables\Columns\TextColumn::make('net_pay'),
             ])
