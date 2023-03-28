@@ -55,6 +55,9 @@ class Employee extends Model
 
 }
 
+relations:
+belongsTo - hasMany
+
 code:
 app\Policies\EmployeePolicy.php
 return true;

@@ -4,34 +4,30 @@ namespace App\Filament\Resources;
 
 use Closure;
 use Filament\Forms;
+use App\Models\Loan;
 use Filament\Tables;
-use Illuminate\Support\Str;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
-use App\Models\Thirteenthmonth;
 use Filament\Resources\Resource;
 use Illuminate\Validation\Rules\Unique;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\LoanResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\ThirteenthmonthResource\Pages;
-use App\Filament\Resources\ThirteenthmonthResource\RelationManagers;
+use App\Filament\Resources\LoanResource\RelationManagers;
 
-class ThirteenthmonthResource extends Resource
+class LoanResource extends Resource
 {
-    protected static ?string $model = Thirteenthmonth::class;
+    protected static ?string $model = Loan::class;
 
-    protected static ?string $modelLabel = '13ᵗʰ Month Pay';
+    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
-    protected static ?string $navigationIcon = 'heroicon-o-gift';
-
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\DatePicker::make('thirteenthmonth_date')
-                    ->label('13ᵗʰ Month Pay date')
+                Forms\Components\DatePicker::make('loan_date')
                     ->required()
                     ->unique(
                         ignoreRecord: true,
@@ -43,8 +39,7 @@ class ThirteenthmonthResource extends Resource
                     ->relationship('employee', 'name')
                     ->preload()
                     ->required(),
-                Forms\Components\TextInput::make('thirteenthmonth_pay')
-                    ->label('13ᵗʰ Month Pay')
+                Forms\Components\TextInput::make('loan')
                     ->required(),
             ]);
     }
@@ -53,12 +48,10 @@ class ThirteenthmonthResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('thirteenthmonth_date')
-                    ->label('13ᵗʰ Month Pay date')
+                Tables\Columns\TextColumn::make('loan_date')
                     ->date(),
                 Tables\Columns\TextColumn::make('employee.name'),
-                Tables\Columns\TextColumn::make('thirteenthmonth_pay')
-                    ->label('13ᵗʰ Month Pay'),
+                Tables\Columns\TextColumn::make('loan'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -83,9 +76,9 @@ class ThirteenthmonthResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListThirteenthmonths::route('/'),
-            'create' => Pages\CreateThirteenthmonth::route('/create'),
-            'edit' => Pages\EditThirteenthmonth::route('/{record}/edit'),
+            'index' => Pages\ListLoans::route('/'),
+            'create' => Pages\CreateLoan::route('/create'),
+            'edit' => Pages\EditLoan::route('/{record}/edit'),
         ];
     }
 
