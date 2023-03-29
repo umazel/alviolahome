@@ -1,6 +1,6 @@
 <?php
 return [
-    'datetime_format' => 'm/d/Y H:i:s',
+    'datetime_format' => 'm/d/Y g:i A',
     'date_format' => 'm/d/Y',
 
     'activity_resource' => \Z3d0X\FilamentLogger\Resources\ActivityResource::class,
