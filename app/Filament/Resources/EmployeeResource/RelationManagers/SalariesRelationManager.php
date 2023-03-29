@@ -92,8 +92,7 @@ class SalariesRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('salary_date')
-                    ->date()
-                    ->sortable(),
+                    ->date(),
                 Tables\Columns\TextColumn::make('rate'),
                 Tables\Columns\TextColumn::make('work_days'),
                 Tables\Columns\TextColumn::make('ot_hours')

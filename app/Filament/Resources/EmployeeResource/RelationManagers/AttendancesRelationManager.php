@@ -59,7 +59,8 @@ class AttendancesRelationManager extends RelationManager
                     ->label('OT hours'),
                 Tables\Columns\TextColumn::make('ut_hours')
                     ->label('Late / UT hours'),
-                Tables\Columns\TextColumn::make('assigned_work'),
+                Tables\Columns\TextColumn::make('assigned_work')
+                    ->limit(50),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()

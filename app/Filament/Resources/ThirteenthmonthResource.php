@@ -24,6 +24,8 @@ class ThirteenthmonthResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
 
+    protected static ?string $navigationGroup = 'Payroll';
+
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
@@ -57,6 +59,10 @@ class ThirteenthmonthResource extends Resource
                     ->label('13ᵗʰ Month Pay date')
                     ->date(),
                 Tables\Columns\TextColumn::make('employee.name')
+                    ->label('Name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('employee.position')
+                    ->label('Position')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('thirteenthmonth_pay')
                     ->label('13ᵗʰ Month Pay'),

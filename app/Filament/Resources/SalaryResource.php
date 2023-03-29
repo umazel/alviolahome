@@ -23,6 +23,8 @@ class SalaryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cash';
 
+    protected static ?string $navigationGroup = 'Payroll';
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -92,9 +94,12 @@ class SalaryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('salary_date')
-                    ->date()
-                    ->sortable(),
+                    ->date(),
                 Tables\Columns\TextColumn::make('employee.name')
+                    ->label('Name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('employee.position')
+                    ->label('Position')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('rate'),
                 Tables\Columns\TextColumn::make('work_days'),

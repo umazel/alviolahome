@@ -18,8 +18,8 @@ class ThirteenthmonthsRelationManager extends RelationManager
     protected static string $relationship = 'thirteenthmonths';
 
     protected static ?string $modelLabel = '13ᵗʰ Month Pay';
-    protected static ?string $pluralModelLabel = '13ᵗʰ Month Pays';
 
+    protected static ?string $pluralModelLabel = '13ᵗʰ Month Pays';
 
     protected static ?string $recordTitleAttribute = 'employee_id';
 

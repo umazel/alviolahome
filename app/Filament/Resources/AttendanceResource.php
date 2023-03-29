@@ -22,6 +22,8 @@ class AttendanceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    protected static ?string $navigationGroup = 'Payroll';
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -63,20 +65,25 @@ class AttendanceResource extends Resource
                 Tables\Columns\TextColumn::make('present_date')
                     ->date(),
                 Tables\Columns\TextColumn::make('employee.name')
+                    ->label('Name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('employee.position')
+                    ->label('Position')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('ot_hours')
                     ->label('OT hours'),
                 Tables\Columns\TextColumn::make('ut_hours')
                     ->label('Late / UT hours'),
-                Tables\Columns\TextColumn::make('assigned_work'),
+                Tables\Columns\TextColumn::make('assigned_work')
+                    ->limit(50),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
-                // Filter::make('present_date')
-                //     ->form([
-                //         Forms\Components\DatePicker::make('date_from'),
-                //         Forms\Components\DatePicker::make('date_until')->default(now()),
-                //     ])
+                Filter::make('present_date')
+                    ->form([
+                        Forms\Components\DatePicker::make('present_date_from')->default(now()->subDays(7)),
+                        Forms\Components\DatePicker::make('present_date_until')->default(now()),
+                    ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

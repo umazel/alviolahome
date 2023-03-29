@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\SalaryResource\Pages;
 
-use App\Filament\Resources\SalaryResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\SalaryResource;
+use App\Filament\Resources\EmployeeResource\Widgets\LoanBalanceOverview;
+use App\Filament\Resources\EmployeeResource\Widgets\ThirteenthmonthBalanceOverview;
 
 class EditSalary extends EditRecord
 {
@@ -22,5 +24,13 @@ class EditSalary extends EditRecord
     protected function getRedirectUrl(): ?string
     {
         return static::getResource()::getUrl('index');
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            LoanBalanceOverview::class,
+            ThirteenthmonthBalanceOverview::class,
+        ];
     }
 }

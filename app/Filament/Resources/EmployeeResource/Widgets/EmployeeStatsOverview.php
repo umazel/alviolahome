@@ -9,6 +9,8 @@ use PhpParser\Node\Expr\Empty_;
 
 class EmployeeStatsOverview extends BaseWidget
 {
+    protected int | string | array $columnSpan = 1;
+
     protected function getCards(): array
     {
         return [

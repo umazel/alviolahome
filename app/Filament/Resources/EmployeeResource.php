@@ -17,12 +17,17 @@ use App\Filament\Resources\EmployeeResource\RelationManagers\SalariesRelationMan
 use App\Filament\Resources\EmployeeResource\RelationManagers\AttendancesRelationManager;
 use App\Filament\Resources\EmployeeResource\RelationManagers\ThirteenthmonthsRelationManager;
 use App\Filament\Resources\EmployeeResource\Widgets\EmployeeStatsOverview;
+use App\Filament\Resources\EmployeeResource\Widgets\LoanBalanceOverview;
+use App\Filament\Resources\EmployeeResource\Widgets\ThirteenthmonthBalanceOverview;
+use App\Models\Thirteenthmonth;
 
 class EmployeeResource extends Resource
 {
     protected static ?string $model = Employee::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
+
+    protected static ?string $navigationGroup = 'Payroll';
 
     protected static ?int $navigationSort = 0;
 
@@ -52,7 +57,8 @@ class EmployeeResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('rate'),
-                Tables\Columns\TextColumn::make('position'),
+                Tables\Columns\TextColumn::make('position')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('birthday')
                     ->date(),
                 Tables\Columns\TextColumn::make('date_hired')
@@ -102,6 +108,8 @@ class EmployeeResource extends Resource
     {
         return [
             EmployeeStatsOverview::class,
+            ThirteenthmonthBalanceOverview::class,
+            LoanBalanceOverview::class,
         ];
     }
 }

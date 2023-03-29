@@ -21,6 +21,8 @@ class LoanResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
+    protected static ?string $navigationGroup = 'Payroll';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -51,6 +53,10 @@ class LoanResource extends Resource
                 Tables\Columns\TextColumn::make('loan_date')
                     ->date(),
                 Tables\Columns\TextColumn::make('employee.name')
+                    ->label('Name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('employee.position')
+                    ->label('Position')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('loan'),
             ])
