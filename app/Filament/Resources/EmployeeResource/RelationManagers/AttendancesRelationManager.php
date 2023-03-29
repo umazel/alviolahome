@@ -8,6 +8,7 @@ use Filament\Tables;
 use Livewire\Component;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rules\Unique;
 use Illuminate\Database\Eloquent\Builder;
@@ -60,10 +61,26 @@ class AttendancesRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('ut_hours')
                     ->label('Late / UT hours'),
                 Tables\Columns\TextColumn::make('assigned_work')
-                    ->limit(50),
+                    ->limit(70),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make()
+                Tables\Filters\TrashedFilter::make(),
+                Filter::make('present_date')
+                    ->form([
+                        Forms\Components\DatePicker::make('date_from'),
+                        Forms\Components\DatePicker::make('date_until'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['date_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('present_date', '>=', $date),
+                            )
+                            ->when(
+                                $data['date_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('present_date', '<=', $date),
+                            );
+                    }),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

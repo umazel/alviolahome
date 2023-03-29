@@ -81,9 +81,20 @@ class AttendanceResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
                 Filter::make('present_date')
                     ->form([
-                        Forms\Components\DatePicker::make('present_date_from')->default(now()->subDays(7)),
-                        Forms\Components\DatePicker::make('present_date_until')->default(now()),
+                        Forms\Components\DatePicker::make('date_from'),
+                        Forms\Components\DatePicker::make('date_until'),
                     ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['date_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('present_date', '>=', $date),
+                            )
+                            ->when(
+                                $data['date_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('present_date', '<=', $date),
+                            );
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
