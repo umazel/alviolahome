@@ -5,6 +5,7 @@ namespace App\Filament\Resources\EmployeeResource\RelationManagers;
 use Closure;
 use Filament\Forms;
 use Filament\Tables;
+use Livewire\Component;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Illuminate\Validation\Rules\Unique;
@@ -26,14 +27,10 @@ class LoansRelationManager extends RelationManager
                     ->required()
                     ->unique(
                         ignoreRecord: true,
-                        callback: function (Unique $rule,  Closure $get) {
-                            return $rule->where('employee_id', $get('employee_id'));
+                        callback: function (Unique $rule, Component $livewire) {
+                            return $rule->where('employee_id', $livewire->ownerRecord->id);
                         }
                     ),
-                Forms\Components\Select::make('employee_id')
-                    ->relationship('employee', 'name')
-                    ->preload()
-                    ->required(),
                 Forms\Components\TextInput::make('loan')
                     ->required(),
             ]);
@@ -45,8 +42,6 @@ class LoansRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('loan_date')
                     ->date(),
-                Tables\Columns\TextColumn::make('employee.name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('loan'),
             ])
             ->filters([

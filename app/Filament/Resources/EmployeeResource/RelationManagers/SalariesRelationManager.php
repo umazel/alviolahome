@@ -5,6 +5,7 @@ namespace App\Filament\Resources\EmployeeResource\RelationManagers;
 use Closure;
 use Filament\Forms;
 use Filament\Tables;
+use Livewire\Component;
 use App\Models\Employee;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
@@ -27,30 +28,35 @@ class SalariesRelationManager extends RelationManager
                     ->required()
                     ->unique(
                         ignoreRecord: true,
-                        callback: function (Unique $rule,  Closure $get) {
-                            return $rule->where('employee_id', $get('employee_id'));
+                        callback: function (Unique $rule, Component $livewire) {
+                            return $rule->where('employee_id', $livewire->ownerRecord->id);
                         }
                     ),
-                Forms\Components\Select::make('employee_id')
-                    ->relationship('employee', 'name')
-                    ->preload()
-                    ->required()
-                    ->reactive()
-                    ->AfterStateUpdated(
-                        function ($set, $state) {
-                            $employee = Employee::find($state);
-                            if ($employee) {
-                                $set('rate', $employee->rate);
-                            } else {
-                                $set('rate', null);
-                            }
-                        }
-                    ),
+                // Forms\Components\Select::make('employee_id')
+                //     ->relationship('employee', 'name')
+                //     ->preload()
+                //     ->required()
+                //     ->reactive()
+                //     ->AfterStateUpdated(
+                //         function ($set, $state) {
+                //             $employee = Employee::find($state);
+                //             if ($employee) {
+                //                 $set('rate', $employee->rate);
+                //             } else {
+                //                 $set('rate', null);
+                //             }
+                //         }
+                //     ),
                 Forms\Components\TextInput::make('rate')
                     ->minValue(0)
                     ->numeric()
                     ->required()
-                    ->disabled(),
+                    ->disabled()
+                    ->default(
+                        function (Component $livewire) {
+                            return $livewire->ownerRecord->rate;
+                        }
+                    ),
                 Forms\Components\TextInput::make('work_days')
                     ->minValue(0)
                     ->numeric()
@@ -88,7 +94,6 @@ class SalariesRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('salary_date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('employee.name'),
                 Tables\Columns\TextColumn::make('rate'),
                 Tables\Columns\TextColumn::make('work_days'),
                 Tables\Columns\TextColumn::make('ot_hours')

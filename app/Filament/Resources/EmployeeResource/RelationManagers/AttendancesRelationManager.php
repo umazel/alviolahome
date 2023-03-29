@@ -5,8 +5,10 @@ namespace App\Filament\Resources\EmployeeResource\RelationManagers;
 use Closure;
 use Filament\Forms;
 use Filament\Tables;
+use Livewire\Component;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rules\Unique;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -26,13 +28,10 @@ class AttendancesRelationManager extends RelationManager
                     ->required()
                     ->unique(
                         ignoreRecord: true,
-                        callback: function (Unique $rule,  Closure $get) {
-                            return $rule->where('employee_id', $get('employee_id'));
+                        callback: function (Unique $rule, Component $livewire) {
+                            return $rule->where('employee_id', $livewire->ownerRecord->id);
                         }
                     ),
-                Forms\Components\Select::make('employee_id')
-                    ->relationship('employee', 'name')
-                    ->required(),
                 Forms\Components\TextInput::make('ot_hours')
                     ->label('Overtime hours')
                     ->minValue(0)
@@ -56,8 +55,6 @@ class AttendancesRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('present_date')
                     ->date(),
-                Tables\Columns\TextColumn::make('employee.name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('ot_hours')
                     ->label('OT hours'),
                 Tables\Columns\TextColumn::make('ut_hours')

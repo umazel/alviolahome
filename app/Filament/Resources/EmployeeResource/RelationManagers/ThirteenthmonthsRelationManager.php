@@ -5,6 +5,7 @@ namespace App\Filament\Resources\EmployeeResource\RelationManagers;
 use Closure;
 use Filament\Forms;
 use Filament\Tables;
+use Livewire\Component;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Illuminate\Validation\Rules\Unique;
@@ -31,14 +32,10 @@ class ThirteenthmonthsRelationManager extends RelationManager
                     ->required()
                     ->unique(
                         ignoreRecord: true,
-                        callback: function (Unique $rule,  Closure $get) {
-                            return $rule->where('employee_id', $get('employee_id'));
+                        callback: function (Unique $rule, Component $livewire) {
+                            return $rule->where('employee_id', $livewire->ownerRecord->id);
                         }
                     ),
-                Forms\Components\Select::make('employee_id')
-                    ->relationship('employee', 'name')
-                    ->preload()
-                    ->required(),
                 Forms\Components\TextInput::make('thirteenthmonth_pay')
                     ->label('13ᵗʰ Month Pay')
                     ->required(),
@@ -52,8 +49,6 @@ class ThirteenthmonthsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('thirteenthmonth_date')
                     ->label('13ᵗʰ Month Pay date')
                     ->date(),
-                Tables\Columns\TextColumn::make('employee.name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('thirteenthmonth_pay')
                     ->label('13ᵗʰ Month Pay'),
             ])
