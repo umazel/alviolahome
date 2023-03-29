@@ -95,3 +95,15 @@ xdebug.mode = debug
 
 chrome:
 Xdebug helper
+
+
+composer require z3d0x/filament-logger
+
+php artisan filament-logger:install
+
+php artisan migrate
+
+code:
+config\filament-logger.php
+'datetime_format' => 'm/d/Y H:i:s',
+'date_format' => 'm/d/Y',
