@@ -22,7 +22,7 @@ class ThirteenthmonthBalanceOverview extends BaseWidget
     {
         return [
             Card::make(
-                '13ᵗʰ Month Pay Avalaible',
+                '13ᵗʰ Month Pay Available',
                 round(Salary::where('employee_id', $this->record->id)->pluck('gross_pay')->sum() / 12)
                     - Thirteenthmonth::where('employee_id', $this->record->id)->pluck('thirteenthmonth_pay')->sum()
             ),
